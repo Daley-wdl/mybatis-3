@@ -980,15 +980,21 @@ public class Configuration {
     @Override
     @SuppressWarnings("unchecked")
     public V put(String key, V value) {
+      //如果已经存在key，抛出异常
       if (containsKey(key)) {
         throw new IllegalArgumentException(name + " already contains value for " + key
             + (conflictMessageProducer == null ? "" : conflictMessageProducer.apply(super.get(key), value)));
       }
+      //key中是否存在"."
       if (key.contains(".")) {
+        //getShortName()方法获取了最后一个"."之后的字符，如:key=com.ashan.Hello,那么shortName=Hello
         final String shortKey = getShortName(key);
+        //再判断shortKey是否已经存在了
         if (super.get(shortKey) == null) {
+          //如果不存在，直接设置
           super.put(shortKey, value);
         } else {
+          //如果已经存在，设置为一个特殊的对象，标识shortName同时对应的了多个值
           super.put(shortKey, (V) new Ambiguity(shortKey));
         }
       }
@@ -1002,6 +1008,7 @@ public class Configuration {
         throw new IllegalArgumentException(name + " does not contain value for " + key);
       }
       if (value instanceof Ambiguity) {
+        //如果为特殊对象Ambiguity，同一个shortName有多个命名空间使用，所有不允许用shortName方法，必须加上命名空间访问
         throw new IllegalArgumentException(((Ambiguity) value).getSubject() + " is ambiguous in " + name
             + " (try using the full name including the namespace, or rename one of the entries)");
       }

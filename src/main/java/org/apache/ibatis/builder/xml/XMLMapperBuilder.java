@@ -50,6 +50,8 @@ import org.apache.ibatis.type.TypeHandler;
 
 /**
  * Mapper的配置文件最终会由XMLMapperBuilder对象解析加载到Configuration对象中
+ * 1、ResultMap:结果集映射，对应Configuration中的resultMaps属性
+ * 2、sql:即mapper配置文件中的select、update、insert、delete节点。对应Configuration中的mappedStatements
  *
  * @author Clinton Begin
  * @author Kazuki Shimizu

@@ -32,22 +32,39 @@ import org.apache.ibatis.reflection.ParamNameUtil;
 import org.apache.ibatis.session.Configuration;
 
 /**
+ * ResultMap为一个java对象和一个结果集/表中的一行记录对应
+ *
  * @author Clinton Begin
  */
 public class ResultMap {
   private Configuration configuration;
 
+  //id="detailUserResultMap"
   private String id;
+  //实际要映射的bean ，例如 type="com.ashan.mybatis.User"
   private Class<?> type;
+
+  //所有的resultMapping对象，包括constructor/idArg,constructor/arg,result,association,collection,但不包括association和collection里的子节点
   private List<ResultMapping> resultMappings;
+  //包括constructor/idArg,id
   private List<ResultMapping> idResultMappings;
+
+  //constructor里的子节点
   private List<ResultMapping> constructorResultMappings;
+  //除constructor里的子节点,其他都是，result,association,collection,id
   private List<ResultMapping> propertyResultMappings;
+
+  //所有被映射的列
   private Set<String> mappedColumns;
   private Set<String> mappedProperties;
+
+  //比较少用
   private Discriminator discriminator;
+  //是否有内映射，上图中association, collection都为内映射,内查询不算（就是的reulst节点中配置select属性的情况）
   private boolean hasNestedResultMaps;
+  //是否有查询
   private boolean hasNestedQueries;
+  //是否要求自动映射
   private Boolean autoMapping;
 
   private ResultMap() {
@@ -89,13 +106,17 @@ public class ResultMap {
       resultMap.constructorResultMappings = new ArrayList<>();
       resultMap.propertyResultMappings = new ArrayList<>();
       final List<String> constructorArgNames = new ArrayList<>();
+      //遍历所有的resultMapping
       for (ResultMapping resultMapping : resultMap.resultMappings) {
+        //如果其中一个resultMapping有内查询，则这个resultMap也就是有内查询
         resultMap.hasNestedQueries = resultMap.hasNestedQueries || resultMapping.getNestedQueryId() != null;
+        //如果其中一个resultMapping有内映射，则这个resultMap也就是有内映射
         resultMap.hasNestedResultMaps = resultMap.hasNestedResultMaps || (resultMapping.getNestedResultMapId() != null && resultMapping.getResultSet() == null);
         final String column = resultMapping.getColumn();
         if (column != null) {
           resultMap.mappedColumns.add(column.toUpperCase(Locale.ENGLISH));
         } else if (resultMapping.isCompositeResult()) {
+          //组合的配置
           for (ResultMapping compositeResultMapping : resultMapping.getComposites()) {
             final String compositeColumn = compositeResultMapping.getColumn();
             if (compositeColumn != null) {
