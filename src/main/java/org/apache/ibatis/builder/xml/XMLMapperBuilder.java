@@ -49,6 +49,8 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
 /**
+ * Mapper的配置文件最终会由XMLMapperBuilder对象解析加载到Configuration对象中
+ *
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */

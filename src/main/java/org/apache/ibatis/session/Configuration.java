@@ -32,6 +32,8 @@ import org.apache.ibatis.builder.CacheRefResolver;
 import org.apache.ibatis.builder.IncompleteElementException;
 import org.apache.ibatis.builder.ResultMapResolver;
 import org.apache.ibatis.builder.annotation.MethodResolver;
+import org.apache.ibatis.builder.xml.XMLConfigBuilder;
+import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.builder.xml.XMLStatementBuilder;
 import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.cache.decorators.FifoCache;
@@ -96,10 +98,37 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 /**
+ * Configuration类保存了所有Mybatis的配置信息。
+ *
+ * configuration的属性主要分为两大部分：
+ *    1、从mybatis-config.xml中读取的配置
+ *    2、从mapper配置文件或Mapper注解读取的配置
  * @author Clinton Begin
  */
 public class Configuration {
 
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /**
+   * mybatis-config.xml文件中对应的属性, 由 {@link XMLConfigBuilder} 类解析
+   *
+   *  <settings>
+   *       <setting name="cacheEnabled" value="true"/>
+   *       <setting name="lazyLoadingEnabled" value="true"/>
+   *       <setting name="multipleResultSetsEnabled" value="true"/>
+   *       <setting name="useColumnLabel" value="true"/>
+   *       <setting name="useGeneratedKeys" value="false"/>
+   *       <setting name="autoMappingBehavior" value="PARTIAL"/>
+   *       <setting name="defaultExecutorType" value="SIMPLE"/>
+   *       <setting name="defaultStatementTimeout" value="25"/>
+   *       <setting name="defaultFetchSize" value="100"/>
+   *       <setting name="safeRowBoundsEnabled" value="false"/>
+   *       <setting name="mapUnderscoreToCamelCase" value="false"/>
+   *       <setting name="localCacheScope" value="SESSION"/>
+   *       <setting name="jdbcTypeForNull" value="OTHER"/>
+   *       <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+   *  </settings>
+   */
   protected Environment environment;
 
   protected boolean safeRowBoundsEnabled;
@@ -150,6 +179,13 @@ public class Configuration {
   protected final TypeAliasRegistry typeAliasRegistry = new TypeAliasRegistry();
   protected final LanguageDriverRegistry languageRegistry = new LanguageDriverRegistry();
 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /**
+   * 从Mapper配置文件中读取的属性, 由 {@link XMLMapperBuilder} 类解析
+   */
+  //保存了所有Mapper配置文件中的select/update/insert/delete节点信息
   protected final Map<String, MappedStatement> mappedStatements = new StrictMap<MappedStatement>("Mapped Statements collection")
       .conflictMessageProducer((savedValue, targetValue) ->
           ". please check " + savedValue.getResource() + " and " + targetValue.getResource());
@@ -157,6 +193,8 @@ public class Configuration {
   protected final Map<String, ResultMap> resultMaps = new StrictMap<>("Result Maps collection");
   protected final Map<String, ParameterMap> parameterMaps = new StrictMap<>("Parameter Maps collection");
   protected final Map<String, KeyGenerator> keyGenerators = new StrictMap<>("Key Generators collection");
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
   protected final Set<String> loadedResources = new HashSet<>();
   protected final Map<String, XNode> sqlFragments = new StrictMap<>("XML fragments parsed from previous mappers");

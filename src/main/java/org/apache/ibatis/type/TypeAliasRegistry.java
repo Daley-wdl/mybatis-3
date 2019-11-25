@@ -111,6 +111,7 @@ public class TypeAliasRegistry {
       String key = string.toLowerCase(Locale.ENGLISH);
       Class<T> value;
       if (typeAliases.containsKey(key)) {
+        //如果是别名，直接从注册表里返回
         value = (Class<T>) typeAliases.get(key);
       } else {
         value = (Class<T>) Resources.classForName(string);

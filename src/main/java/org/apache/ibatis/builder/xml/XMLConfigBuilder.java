@@ -99,14 +99,21 @@ public class XMLConfigBuilder extends BaseBuilder {
     return configuration;
   }
 
+  /**
+   * 解析 xml 配置文件 中的 configuration 标签
+   */
   private void parseConfiguration(XNode root) {
     try {
       //issue #117 read properties first
+      // 加载properties节点,一般是定义一些变量
       propertiesElement(root.evalNode("properties"));
       Properties settings = settingsAsProperties(root.evalNode("settings"));
       loadCustomVfs(settings);
+      //自定义log
       loadCustomLogImpl(settings);
+      //加载别名
       typeAliasesElement(root.evalNode("typeAliases"));
+      //拦截器
       pluginElement(root.evalNode("plugins"));
       objectFactoryElement(root.evalNode("objectFactory"));
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
@@ -115,7 +122,10 @@ public class XMLConfigBuilder extends BaseBuilder {
       // read it after objectFactory and objectWrapperFactory issue #631
       environmentsElement(root.evalNode("environments"));
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
+
+      //加载Mapper的配置文件，最主要的有两个：一个是sql的定义，一个是resultMap
       typeHandlerElement(root.evalNode("typeHandlers"));
+      //加载Mapper配置文件
       mapperElement(root.evalNode("mappers"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
@@ -151,15 +161,22 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
   }
 
+  /**
+   * 自定义log
+   */
   private void loadCustomLogImpl(Properties props) {
     Class<? extends Log> logImpl = resolveClass(props.getProperty("logImpl"));
     configuration.setLogImpl(logImpl);
   }
 
+  /**
+   * 加载别名
+   */
   private void typeAliasesElement(XNode parent) {
     if (parent != null) {
       for (XNode child : parent.getChildren()) {
         if ("package".equals(child.getName())) {
+          //package的方式，很少用到
           String typeAliasPackage = child.getStringAttribute("name");
           configuration.getTypeAliasRegistry().registerAliases(typeAliasPackage);
         } else {
@@ -170,6 +187,7 @@ public class XMLConfigBuilder extends BaseBuilder {
             if (alias == null) {
               typeAliasRegistry.registerAlias(clazz);
             } else {
+              //加载到别名注册表中
               typeAliasRegistry.registerAlias(alias, clazz);
             }
           } catch (ClassNotFoundException e) {
@@ -218,17 +236,28 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
   }
 
+  /**
+   * 加载properties节点
+   *
+   * 1、可以设置url或resource属性从外部文件中加载一个properties文件
+   * 2、可以通过property子节点进行配置，如果子节点属性的key与外部文件的key重复的话，子节点的将被覆
+   * 3、通过编程方式定义的属性最后加载，优先级最高
+   */
   private void propertiesElement(XNode context) throws Exception {
     if (context != null) {
+      //先加载property子节点下的属性
       Properties defaults = context.getChildrenAsProperties();
       String resource = context.getStringAttribute("resource");
       String url = context.getStringAttribute("url");
+      //不能同时设置resource属性和url属性
       if (resource != null && url != null) {
         throw new BuilderException("The properties element cannot specify both a URL and a resource based property file reference.  Please specify one or the other.");
       }
       if (resource != null) {
+        //会覆盖子节点的配置
         defaults.putAll(Resources.getResourceAsProperties(resource));
       } else if (url != null) {
+        //会覆盖子节点的配置
         defaults.putAll(Resources.getUrlAsProperties(url));
       }
       Properties vars = configuration.getVariables();
@@ -236,6 +265,7 @@ public class XMLConfigBuilder extends BaseBuilder {
         defaults.putAll(vars);
       }
       parser.setVariables(defaults);
+      //设置了变量列表中去
       configuration.setVariables(defaults);
     }
   }
@@ -357,6 +387,9 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
   }
 
+  /**
+   * 加载Mapper配置文件
+   */
   private void mapperElement(XNode parent) throws Exception {
     if (parent != null) {
       for (XNode child : parent.getChildren()) {
@@ -370,11 +403,13 @@ public class XMLConfigBuilder extends BaseBuilder {
           if (resource != null && url == null && mapperClass == null) {
             ErrorContext.instance().resource(resource);
             InputStream inputStream = Resources.getResourceAsStream(resource);
+            //由XMLMapperBuilder对象解析加载，resource方式
             XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, resource, configuration.getSqlFragments());
             mapperParser.parse();
           } else if (resource == null && url != null && mapperClass == null) {
             ErrorContext.instance().resource(url);
             InputStream inputStream = Resources.getUrlAsStream(url);
+            //由XMLMapperBuilder对象解析加载, url方式
             XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, url, configuration.getSqlFragments());
             mapperParser.parse();
           } else if (resource == null && url == null && mapperClass != null) {
