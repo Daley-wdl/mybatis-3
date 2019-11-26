@@ -33,6 +33,13 @@ import java.util.*;
 /**
  * Mapper XML 配置构建器，主要负责解析 Mapper 映射配置文件
  *
+ *  1、ResultMap对象是结果集中的一行记录和一个java对象的对应关系。
+ *  2、ResultMapping对象是结果集中的列与java对象的属性之间的对应关系。
+ *  3、ResultMapp由id,type等基本的属性组成外，还包含多个ResultMapping对象。这类似于一个java对象由多个属性组成一个道理。
+ *  4、ResultMapping最主要的属性column(结果集字段名),property(java对象的属性)，ResultMapping可以指向一个内查询或内映射。
+ *  5、XMLMapperBuilder调用如下方法来解析并生成ResultMap对象
+ *  6、ResultMap和ResultMapping对象都是由相对应的Builder构建的。Builder只是进行了一些数据验证，并没有太多的业务逻辑。
+ *
  * @author Clinton Begin
  */
 public class XMLMapperBuilder extends BaseBuilder {
@@ -87,7 +94,10 @@ public class XMLMapperBuilder extends BaseBuilder {
         this.resource = resource;
     }
 
-    public void parse() {
+  /**
+   * 解析mapper
+   */
+  public void parse() {
         // 判断当前 Mapper 是否已经加载过
         if (!configuration.isResourceLoaded(resource)) {
             // 解析 `<mapper />` 节点
@@ -303,7 +313,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     // 解析 <resultMap /> 节点
     private ResultMap resultMapElement(XNode resultMapNode, List<ResultMapping> additionalResultMappings) throws Exception {
         ErrorContext.instance().activity("processing " + resultMapNode.getValueBasedIdentifier());
-        // 获得 id 属性
+        // 获得 id 属性, getValueBasedIdentifier() 内部映射生成ID的地方，这个只是一个标识，保证唯一性即可！
         String id = resultMapNode.getStringAttribute("id",
                 resultMapNode.getValueBasedIdentifier());
         // 获得 type 属性
@@ -433,7 +443,7 @@ public class XMLMapperBuilder extends BaseBuilder {
         return true;
     }
 
-    // 将当前节点构建成 ResultMapping 对象
+    // 将当前节点构建成 ResultMapping 对象,  constructor/idArg、constructor/arg、result、association、collection 这些标签解析成 resultMapping 都用的该方法
     private ResultMapping buildResultMappingFromContext(XNode context, Class<?> resultType, List<ResultFlag> flags) throws Exception {
         // 获得各种属性
         String property;
@@ -458,17 +468,18 @@ public class XMLMapperBuilder extends BaseBuilder {
         Class<?> javaTypeClass = resolveClass(javaType);
         Class<? extends TypeHandler<?>> typeHandlerClass = resolveClass(typeHandler);
         JdbcType jdbcTypeEnum = resolveJdbcType(jdbcType);
-        // 构建 ResultMapping 对象
+        // 构建 ResultMapping 对象， 委托给 MapperBuilderAssistant 类
         return builderAssistant.buildResultMapping(resultType, property, column, javaTypeClass, jdbcTypeEnum, nestedSelect, nestedResultMap, notNullColumn, columnPrefix, typeHandlerClass, flags, resultSet, foreignColumn, lazy);
     }
 
     // 处理内嵌的 ResultMap 的情况
     private String processNestedResultMappings(XNode context, List<ResultMapping> resultMappings) throws Exception {
+        //只有association, collection, case节点才会生成内部映射，其他不生成，返回null
         if ("association".equals(context.getName())
                 || "collection".equals(context.getName())
                 || "case".equals(context.getName())) {
             if (context.getStringAttribute("select") == null) {
-                // 解析，并返回 ResultMap
+                // 解析，并返回 ResultMap， 这里类似一个递归调用，需要注意内部映射的ID是Mybatis自动生成的，不是在配置文件里读取的
                 ResultMap resultMap = resultMapElement(context, resultMappings);
                 return resultMap.getId();
             }
