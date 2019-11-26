@@ -90,7 +90,8 @@ public final class MappedStatement {
      */
     private boolean useCache;
     /**
-     * 这个设置仅针对嵌套结果 select 语句适用：如果为 true，就是假设包含了嵌套结果集或是分组了，这样的话当返回一个主结果行的时候，就不会发生有对前面结果集的引用的情况。这就使得在获取嵌套的结果集的时候不至于导致内存不够用。默认值：false。
+     * 这个设置仅针对嵌套结果 select 语句适用：如果为 true，就是假设包含了嵌套结果集或是分组了，这样的话当返回一个主结果行的时候，
+     * 就不会发生有对前面结果集的引用的情况。这就使得在获取嵌套的结果集的时候不至于导致内存不够用。默认值：false。
      */
     private boolean resultOrdered;
     /**
@@ -126,7 +127,7 @@ public final class MappedStatement {
      */
     private LanguageDriver lang;
     /**
-     * 这个设置仅对多结果集的情况适用，它将列出语句执行后返回的结果集并每个结果集给一个名称，名称是逗号分隔的。
+     * 这个设置仅对多结果集的情况适用，它将列出语句执行后返回的结果集并且每个结果集给一个名称，名称是逗号分隔的。
      */
     private String[] resultSets;
 

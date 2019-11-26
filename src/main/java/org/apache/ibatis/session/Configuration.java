@@ -293,7 +293,7 @@ public class Configuration {
         typeAliasRegistry.registerAlias("JAVASSIST", JavassistProxyFactory.class);
         // 注册到 typeAliasRegistry 中 end ~~~~
 
-        // 注册到 languageRegistry 中
+        // 注册到 languageRegistry 中, SqlSource对象是通过LanguageDriver对象构建的
         languageRegistry.setDefaultDriverClass(XMLLanguageDriver.class);
         languageRegistry.register(RawLanguageDriver.class);
     }

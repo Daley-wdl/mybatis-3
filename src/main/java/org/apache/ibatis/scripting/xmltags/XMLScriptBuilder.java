@@ -66,7 +66,7 @@ public class XMLScriptBuilder extends BaseBuilder {
     }
 
     /**
-     * 初始化 {@link #nodeHandlerMap} 属性
+     * 初始化 {@link #nodeHandlerMap} 属性，Mybatis3 动态sql 都支持哪些配置
      */
     private void initNodeHandlerMap() {
         nodeHandlerMap.put("trim", new TrimHandler());
@@ -86,13 +86,16 @@ public class XMLScriptBuilder extends BaseBuilder {
      * @return SqlSource 对象
      */
     public SqlSource parseScriptNode() {
-        // 解析 SQL
+        // SQL 解析成多个SqlNode
         MixedSqlNode rootSqlNode = parseDynamicTags(context);
         // 创建 SqlSource 对象
         SqlSource sqlSource;
+      //判断sql是否是动态的
         if (isDynamic) {
+          //生成动态的SqlSource
             sqlSource = new DynamicSqlSource(configuration, rootSqlNode);
         } else {
+          //生成静态的SqlSource
             sqlSource = new RawSqlSource(configuration, rootSqlNode, parameterType);
         }
         return sqlSource;
@@ -100,6 +103,20 @@ public class XMLScriptBuilder extends BaseBuilder {
 
     /**
      * 解析 SQL 成 MixedSqlNode 对象
+     *
+     *       例如：
+     *        <select id="selectUserDetail" resultMap="detailUserResultMap">
+     *             <![CDATA[
+     *                 select user_id,user_name,user_type,cust_id --这里一行会解析成一个StaticTextSqlNode
+     *                     from tf_f_user a --这里一行也会解析成一个StaticTextSqlNode
+     *                     where a.user_id=#{userId} --这行会被解析成TextSqlNode,并且isDynamic被设置成true,因为有占位符
+     *                                               --这个空行也解析成一个StaticTextSqlNode
+     *             ]]>
+     *             <if test="user_name!=null"> <!-- 这个标签里的内容会交给IfHandler处理 -->
+     *                 and --这里的解析与上行的一样，解析成一个StaticTextSqlNode
+     *                 user_name=#{userName} --这里的解析与上行的一样，也会被解析成一个TextSqlNode,并且isDynamic被设置成true,因为有占位符
+     *             </if><!-- IfHandler会将这里面的内个SqlNode组成MixedSqlNode再组成一个IfSqlNode -->
+     *         </select>
      *
      * @param node XNode 节点
      * @return MixedSqlNode
@@ -302,7 +319,7 @@ public class XMLScriptBuilder extends BaseBuilder {
 
         @Override
         public void handleNode(XNode nodeToHandle, List<SqlNode> targetContents) {
-            // 解析内部的 SQL 节点，成 MixedSqlNode 对象
+            // 解析内部的 SQL 节点，成 MixedSqlNode 对象，类似递归
             MixedSqlNode mixedSqlNode = parseDynamicTags(nodeToHandle);
             // 获得 test 属性
             String test = nodeToHandle.getStringAttribute("test");

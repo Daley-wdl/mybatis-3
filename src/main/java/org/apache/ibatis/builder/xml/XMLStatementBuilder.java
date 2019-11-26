@@ -58,7 +58,7 @@ public class XMLStatementBuilder extends BaseBuilder {
     }
 
     /**
-     * 执行解析
+     * 执行解析，select/update/insert/delete元素
      */
     public void parseStatementNode() {
         // 获得 id 属性，编号。

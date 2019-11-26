@@ -38,11 +38,11 @@ import java.util.Map;
 public class BoundSql {
 
     /**
-     * SQL 语句
+     * SQL 语句，这个sql已经是经过了一些处理，可以被jdbc执行的了。xml里配置的 sql 可能有占位符 #{username},这里的sql占位符已经被替换成 "?" 号了
      */
     private final String sql;
     /**
-     * ParameterMapping 数组
+     * ParameterMapping 数组，执行sql对象的实际的参数
      */
     private final List<ParameterMapping> parameterMappings;
     /**

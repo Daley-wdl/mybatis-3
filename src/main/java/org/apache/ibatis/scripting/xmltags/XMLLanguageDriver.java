@@ -29,7 +29,7 @@ import org.apache.ibatis.scripting.defaults.RawSqlSource;
 import org.apache.ibatis.session.Configuration;
 
 /**
- * XML 语言驱动实现类
+ * XML 语言驱动实现类, SqlSource对象是通过LanguageDriver对象构建的, 该类是 Configuration 默认创建的
  *
  * @author Eduardo Macarron
  */
