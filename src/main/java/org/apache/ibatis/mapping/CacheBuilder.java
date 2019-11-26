@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * {@link Cache} 构造器
+ * {@link Cache} 构造器， 缓存设计采用装饰器模式
  *
  * @author Clinton Begin
  */
@@ -160,7 +160,7 @@ public class CacheBuilder {
             if (size != null && metaCache.hasSetter("size")) {
                 metaCache.setValue("size", size);
             }
-            // 包装成 ScheduledCache 对象
+            // 包装成 ScheduledCache 对象，增加定时清理的功能
             if (clearInterval != null) {
                 cache = new ScheduledCache(cache);
                 ((ScheduledCache) cache).setClearInterval(clearInterval);
@@ -169,7 +169,7 @@ public class CacheBuilder {
             if (readWrite) {
                 cache = new SerializedCache(cache);
             }
-            // 包装成 LoggingCache 对象
+            // 包装成 LoggingCache 对象，增加日志功能
             cache = new LoggingCache(cache);
             // 包装成 SynchronizedCache 对象
             cache = new SynchronizedCache(cache);

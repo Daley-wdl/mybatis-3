@@ -35,7 +35,7 @@ public class FifoCache implements Cache {
      */
     private final Cache delegate;
     /**
-     * 双端队列，记录缓存键的添加
+     * 双端队列，记录缓存键的添加，{@link LinkedList}
      */
     private final Deque<Object> keyList;
     /**

@@ -233,6 +233,7 @@ public class XMLMapperBuilder extends BaseBuilder {
             // 创建 CacheRefResolver 对象，并执行解析
             CacheRefResolver cacheRefResolver = new CacheRefResolver(builderAssistant, context.getStringAttribute("namespace"));
             try {
+              //获取另一个命名空间的缓存，并加入Configruation中
                 cacheRefResolver.resolveCacheRef();
             } catch (IncompleteElementException e) {
                 // 解析失败，添加到 configuration 的 incompleteCacheRefs 中

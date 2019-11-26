@@ -147,9 +147,10 @@ public class MapperBuilderAssistant extends BaseBuilder {
                              boolean readWrite,
                              boolean blocking,
                              Properties props) {
-        // 创建 Cache 对象
+        // 创建 Cache 对象，命名空间作为cache的id
         Cache cache = new CacheBuilder(currentNamespace)
                 .implementation(valueOrDefault(typeClass, PerpetualCache.class))
+                //这里的 evictionClass 也是一个Cache,设计模型中的装饰模式
                 .addDecorator(valueOrDefault(evictionClass, LruCache.class))
                 .clearInterval(flushInterval)
                 .size(size)

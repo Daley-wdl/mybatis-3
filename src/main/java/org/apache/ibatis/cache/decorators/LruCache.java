@@ -24,7 +24,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 /**
  * Lru (least recently used) cache decorator
  *
- * 基于最少使用的淘汰机制的 Cache 实现类
+ * 基于最少使用的淘汰机制的 Cache 实现类，实现用 {@link LinkedHashMap}
  *
  * @author Clinton Begin
  */
