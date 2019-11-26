@@ -99,7 +99,7 @@ public class ResultMapping {
     }
 
     /**
-     * 构造器
+     * 构造器, 构建者(Builder)模式
      */
     public static class Builder {
 

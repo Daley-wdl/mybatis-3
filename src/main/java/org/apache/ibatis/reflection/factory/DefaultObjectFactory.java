@@ -22,7 +22,7 @@ import java.lang.reflect.Constructor;
 import java.util.*;
 
 /**
- * 默认 ObjectFactory 实现类
+ * 默认 ObjectFactory 实现类，Mybatis使用这个工厂去创建所有需要被创建的对象
  *
  * @author Clinton Begin
  */
@@ -50,6 +50,9 @@ public class DefaultObjectFactory implements ObjectFactory, Serializable {
         // no props for default
     }
 
+  /**
+   * 反射机制, 创建对象
+   */
     private <T> T instantiateClass(Class<T> type, List<Class<?>> constructorArgTypes, List<Object> constructorArgs) {
         try {
             Constructor<T> constructor;

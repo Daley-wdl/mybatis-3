@@ -22,6 +22,11 @@ import java.util.Properties;
  * MyBatis uses an ObjectFactory to create all needed new Objects.
  *
  * Object 工厂接口，用于创建指定类的对象
+ *
+ * 可通过如下配置 指定自定义工厂
+ *  <objectFactory type="com.ashan.mybatis.AshanObjectFactory">
+ *       <property name="myProperty" value="myvalue"/>
+ *     </objectFactory>
  * 
  * @author Clinton Begin
  */

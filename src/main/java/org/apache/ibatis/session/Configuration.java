@@ -143,7 +143,7 @@ public class Configuration {
      */
     protected ReflectorFactory reflectorFactory = new DefaultReflectorFactory();
     /**
-     * ObjectFactory 对象
+     * ObjectFactory 对象, 抽象工厂
      */
     protected ObjectFactory objectFactory = new DefaultObjectFactory();
     /**
@@ -632,11 +632,12 @@ public class Configuration {
         return getDefaultScriptingLanguageInstance();
     }
 
+    //外观模式, 好处就是需要扩展MetaObject类时，只需要修改newMetaObject方法即可，不用修改如此多的调用者代码
     public MetaObject newMetaObject(Object object) {
         return MetaObject.forObject(object, objectFactory, objectWrapperFactory, reflectorFactory);
     }
 
-    // 创建 ParameterHandler 对象
+    // 创建 ParameterHandler 对象, 外观模式
     public ParameterHandler newParameterHandler(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql) {
         // 创建 ParameterHandler 对象
         ParameterHandler parameterHandler = mappedStatement.getLang().createParameterHandler(mappedStatement, parameterObject, boundSql);
@@ -645,7 +646,7 @@ public class Configuration {
         return parameterHandler;
     }
 
-    // 创建 ResultSetHandler 对象
+    // 创建 ResultSetHandler 对象, 外观模式
     public ResultSetHandler newResultSetHandler(Executor executor, MappedStatement mappedStatement, RowBounds rowBounds, ParameterHandler parameterHandler,
                                                 ResultHandler resultHandler, BoundSql boundSql) {
         // 创建 DefaultResultSetHandler 对象

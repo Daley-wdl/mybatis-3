@@ -29,7 +29,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * 基础构造器抽象类，为子类提供通用的工具类
+ * 基础构造器抽象类，模板模式
  *
  * @author Clinton Begin
  */
