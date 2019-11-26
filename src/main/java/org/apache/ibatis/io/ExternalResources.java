@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2019 the original author or authors.
+ *    Copyright 2009-2018 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,15 +15,12 @@
  */
 package org.apache.ibatis.io;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Properties;
-
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
+
+import java.io.*;
+import java.nio.channels.FileChannel;
+import java.util.Properties;
 
 /**
  * @author Clinton Begin
@@ -31,7 +28,7 @@ import org.apache.ibatis.logging.LogFactory;
 @Deprecated
 public class ExternalResources {
 
-  private static final Log log = LogFactory.getLog(ExternalResources.class);
+  private static final Log log = LogFactory.getLog(org.apache.ibatis.io.ExternalResources.class);
 
   private ExternalResources() {
     // do nothing
@@ -42,9 +39,9 @@ public class ExternalResources {
       destFile.createNewFile();
     }
 
-    try (FileInputStream source = new FileInputStream(sourceFile);
-         FileOutputStream destination = new FileOutputStream(destFile)) {
-      destination.getChannel().transferFrom(source.getChannel(), 0, source.getChannel().size());
+    try (FileChannel source = new FileInputStream(sourceFile).getChannel();
+         FileChannel destination = new FileOutputStream(destFile).getChannel()){
+      destination.transferFrom(source, 0, source.size());
     }
 
   }

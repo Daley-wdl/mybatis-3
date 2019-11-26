@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2018 the original author or authors.
+ *    Copyright 2009-2015 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,27 +15,7 @@
  */
 package org.apache.ibatis.jdbc;
 
-import org.apache.ibatis.type.BigDecimalTypeHandler;
-import org.apache.ibatis.type.BlobTypeHandler;
-import org.apache.ibatis.type.BooleanTypeHandler;
-import org.apache.ibatis.type.ByteArrayTypeHandler;
-import org.apache.ibatis.type.ByteTypeHandler;
-import org.apache.ibatis.type.ClobTypeHandler;
-import org.apache.ibatis.type.DateOnlyTypeHandler;
-import org.apache.ibatis.type.DateTypeHandler;
-import org.apache.ibatis.type.DoubleTypeHandler;
-import org.apache.ibatis.type.FloatTypeHandler;
-import org.apache.ibatis.type.IntegerTypeHandler;
-import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.LongTypeHandler;
-import org.apache.ibatis.type.ObjectTypeHandler;
-import org.apache.ibatis.type.ShortTypeHandler;
-import org.apache.ibatis.type.SqlDateTypeHandler;
-import org.apache.ibatis.type.SqlTimeTypeHandler;
-import org.apache.ibatis.type.SqlTimestampTypeHandler;
-import org.apache.ibatis.type.StringTypeHandler;
-import org.apache.ibatis.type.TimeOnlyTypeHandler;
-import org.apache.ibatis.type.TypeHandler;
+import org.apache.ibatis.type.*;
 
 /**
  * @author Clinton Begin
@@ -72,7 +52,7 @@ public enum Null {
   private TypeHandler<?> typeHandler;
   private JdbcType jdbcType;
 
-  Null(TypeHandler<?> typeHandler, JdbcType jdbcType) {
+  private Null(TypeHandler<?> typeHandler, JdbcType jdbcType) {
     this.typeHandler = typeHandler;
     this.jdbcType = jdbcType;
   }

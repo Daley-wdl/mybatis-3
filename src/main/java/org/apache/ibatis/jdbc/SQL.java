@@ -21,7 +21,7 @@ package org.apache.ibatis.jdbc;
 public class SQL extends AbstractSQL<SQL> {
 
   @Override
-  public SQL getSelf() {
+  public org.apache.ibatis.jdbc.SQL getSelf() {
     return this;
   }
 
