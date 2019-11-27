@@ -40,7 +40,7 @@ import java.util.*;
  * The default implementation for {@link SqlSession}.
  * Note that this class is not Thread-Safe.
  *
- * 默认的 SqlSession 实现类
+ * 默认的 SqlSession 实现类，适配器模式
  *
  * @author Clinton Begin
  */
