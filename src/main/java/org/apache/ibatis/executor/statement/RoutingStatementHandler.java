@@ -30,7 +30,7 @@ import java.sql.Statement;
 import java.util.List;
 
 /**
- * 路由的 StatementHandler 对象，根据 Statement 类型，转发到对应的 StatementHandler 实现类中。
+ * 路由的 StatementHandler 对象，根据 Statement 类型，转发到对应的 StatementHandler 实现类中。根据MappedStatement的配置，生成一个 StatementHandler(delegate) 代理
  *
  * @author Clinton Begin
  */
@@ -41,6 +41,9 @@ public class RoutingStatementHandler implements StatementHandler {
      */
     private final StatementHandler delegate;
 
+  /**
+   * 根据MappedStatement的配置，生成一个对应的StatementHandler(delegate),然后所有的实现都由delegate完成。
+   */
     public RoutingStatementHandler(Executor executor, MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
         // 根据不同的类型，创建对应的 StatementHandler 实现类
         switch (ms.getStatementType()) {

@@ -47,7 +47,7 @@ import java.sql.Statement;
 import java.util.*;
 
 /**
- * 默认的 {@link ResultSetHandler} 实现类
+ * 默认的 {@link ResultSetHandler} 实现类， 唯一实现
  *
  * @author Clinton Begin
  * @author Eduardo Macarron
