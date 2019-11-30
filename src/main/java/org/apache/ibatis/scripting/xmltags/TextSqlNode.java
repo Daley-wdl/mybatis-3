@@ -23,7 +23,7 @@ import org.apache.ibatis.type.SimpleTypeRegistry;
 import java.util.regex.Pattern;
 
 /**
- * 文本的 SqlNode 实现类。
+ * 文本的 SqlNode 实现类。 只会处理"${}"这种占位符，而不会处理这种占位符:"#{}"
  *
  * @author Clinton Begin
  */

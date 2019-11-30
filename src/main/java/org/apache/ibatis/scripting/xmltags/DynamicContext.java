@@ -94,7 +94,10 @@ public class DynamicContext {
         return uniqueNumber++;
     }
 
-    static class ContextMap extends HashMap<String, Object> {
+  /**
+   * 获取 参数map 或 对象里对应属性值
+   */
+  static class ContextMap extends HashMap<String, Object> {
 
         private static final long serialVersionUID = 2977601501966151582L;
 

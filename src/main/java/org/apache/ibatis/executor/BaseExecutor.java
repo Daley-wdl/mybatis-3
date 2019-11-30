@@ -41,7 +41,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static org.apache.ibatis.executor.ExecutionPlaceholder.EXECUTION_PLACEHOLDER;
 
 /**
- * Executor 基类，提供骨架方法，从而使子类只要实现指定的几个抽象方法即可
+ * Executor 基类，提供骨架方法，从而使子类只要实现指定的几个抽象方法即可, 模板模式和装饰模式
  *
  * @author Clinton Begin
  */

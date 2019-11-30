@@ -16,7 +16,7 @@
 package org.apache.ibatis.scripting.xmltags;
 
 /**
- * 静态文本的 SqlNode 实现类
+ * 静态文本的 SqlNode 实现类, 直接添加
  *
  * @author Clinton Begin
  */

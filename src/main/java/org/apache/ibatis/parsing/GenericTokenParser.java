@@ -16,7 +16,7 @@
 package org.apache.ibatis.parsing;
 
 /**
- * 通用的 Token 解析器
+ * 通用的 Token 解析器, 占位符解析
  *
  * @author Clinton Begin
  */
@@ -105,6 +105,13 @@ public class GenericTokenParser {
                     offset = src.length;
                 } else {
                     // closeToken 找到，将 expression 提交给 handler 处理 ，并将处理结果添加到 builder 中
+                  /**
+                   * 如果text为:select ${primary_key},${col_name} from ${tab_name)，那么handler.handleToken()方法会被调用三次，分别为：
+                   *
+                   * handler.handleToken("primary_key")
+                   * handler.handleToken("col_name")
+                   * handler.handleToken("tab_name")
+                   */
                     builder.append(handler.handleToken(expression.toString()));
                     // 修改 offset
                     offset = end + closeToken.length();
