@@ -94,6 +94,12 @@ public class SqlSourceBuilder extends BaseBuilder {
             return "?";
         }
 
+      /**
+       * 这里content可以是这样子的:#{height,javaType=double,jdbcType=NUMERIC,numericScale=2}
+       * 解析成Map方式
+       *
+       * @return
+       */
         private ParameterMapping buildParameterMapping(String content) {
             // 解析成 Map 集合
             Map<String, String> propertiesMap = parseParameterMapping(content);
@@ -116,7 +122,7 @@ public class SqlSourceBuilder extends BaseBuilder {
                     propertyType = Object.class;
                 }
             }
-            // 创建 ParameterMapping.Builder 对象
+            // 创建 ParameterMapping.Builder 对象, ParameterMapping描述的是java对象的属性与sql执行参数的对应关系。跟ResultMapping对象
             ParameterMapping.Builder builder = new ParameterMapping.Builder(configuration, property, propertyType);
             // 初始化 ParameterMapping.Builder 对象的属性
             Class<?> javaType = propertyType;
@@ -124,6 +130,7 @@ public class SqlSourceBuilder extends BaseBuilder {
             for (Map.Entry<String, String> entry : propertiesMap.entrySet()) {
                 String name = entry.getKey();
                 String value = entry.getValue();
+              //示例:#{height,javaType=double,jdbcType=NUMERIC,numericScale=2}
                 if ("javaType".equals(name)) {
                     javaType = resolveClass(value);
                     builder.javaType(javaType);
