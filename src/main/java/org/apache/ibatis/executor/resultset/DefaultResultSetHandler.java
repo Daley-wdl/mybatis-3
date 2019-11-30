@@ -47,7 +47,7 @@ import java.sql.Statement;
 import java.util.*;
 
 /**
- * 默认的 {@link ResultSetHandler} 实现类， 唯一实现
+ * 默认的 {@link ResultSetHandler} 实现类， 唯一实现， 分为简单映射 和 复杂映射
  *
  * @author Clinton Begin
  * @author Eduardo Macarron
@@ -1095,7 +1095,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
         // 获得 ResultSet 对象，并跳到 rowBounds 指定的开始位置
         ResultSet resultSet = rsw.getResultSet();
         skipRows(resultSet, rowBounds);
-        // TODO 芋艿
+        // TODO
         Object rowValue = previousRowValue;
         // 循环
         while (shouldProcessMoreRows(resultContext, rowBounds) // 是否继续处理 ResultSet
@@ -1103,7 +1103,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
                 && resultSet.next()) { // ResultSet 是否还有下一条
             // 根据该行记录以及 ResultMap.discriminator ，决定映射使用的 ResultMap 对象
             final ResultMap discriminatedResultMap = resolveDiscriminatedResultMap(resultSet, resultMap, null);
-            // TODO 芋艿
+            // TODO
             final CacheKey rowKey = createRowKey(discriminatedResultMap, rsw, null);
             Object partialObject = nestedResultObjects.get(rowKey);
             // issue #577 && #542
