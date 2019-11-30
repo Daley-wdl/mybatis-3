@@ -89,7 +89,9 @@ public class DefaultParameterHandler implements ParameterHandler {
                     } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
                         value = parameterObject;
                     } else {
+                      //主要通过MetaObject对象从参数出取数据，
                         MetaObject metaObject = configuration.newMetaObject(parameterObject);
+                      //根据参数名称获取值
                         value = metaObject.getValue(propertyName);
                     }
                     // 获得 typeHandler、jdbcType 属性
