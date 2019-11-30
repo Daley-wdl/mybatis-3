@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 对象元数据，提供了对象的属性值的获得和设置
+ * 对象元数据，提供了对象的属性值的获得和设置, 工具类，提供了类似ognl和jstl这样的方式去访问map,collection及javabean
  *
  * @author Clinton Begin
  */

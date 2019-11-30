@@ -86,7 +86,10 @@ public class Reflector {
      */
     private Map<String, String> caseInsensitivePropertyMap = new HashMap<>();
 
-    public Reflector(Class<?> clazz) {
+  /**
+   * 解析指定 clazz
+   */
+  public Reflector(Class<?> clazz) {
         // 设置对应的类
         type = clazz;
         // 初始化 defaultConstructor
