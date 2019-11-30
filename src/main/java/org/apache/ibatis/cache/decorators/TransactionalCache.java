@@ -28,7 +28,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 /**
  * The 2nd level cache transactional buffer.
  *
- * 支持事务的 Cache 实现类，主要用于二级缓存中。
+ * 支持事务的 Cache 实现类, 主要用于二级缓存中。
  *
  * This class holds all cache entries that are to be added to the 2nd level cache during a Session.
  * Entries are sent to the cache when commit is called or discarded if the Session is rolled back. 

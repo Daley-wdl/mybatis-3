@@ -29,7 +29,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * 支持二级缓存的 Executor 的实现类
+ * 支持二级缓存的 Executor  的实现类
  *
  * @author Clinton Begin
  * @author Eduardo Macarron

@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * {@link TransactionalCache} 管理器
+ * {@link TransactionalCache}  管理器
  *
  * @author Clinton Begin
  */
