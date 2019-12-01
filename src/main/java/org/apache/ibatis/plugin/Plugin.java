@@ -85,7 +85,7 @@ public class Plugin implements InvocationHandler {
             // 获得目标方法是否被拦截
             Set<Method> methods = signatureMap.get(method.getDeclaringClass());
             if (methods != null && methods.contains(method)) {
-                // 如果是，则拦截处理该方法
+                // 如果是，则拦截处理该方法, 这里的target已经是原始对象了
                 return interceptor.intercept(new Invocation(target, method, args));
             }
             // 如果不是，则调用原方法
