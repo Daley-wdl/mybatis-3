@@ -16,6 +16,7 @@
 package org.apache.ibatis.session.defaults;
 
 import org.apache.ibatis.binding.BindingException;
+import org.apache.ibatis.binding.MapperRegistry;
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.exceptions.ExceptionFactory;
 import org.apache.ibatis.exceptions.TooManyResultsException;
@@ -318,6 +319,9 @@ public class DefaultSqlSession implements SqlSession {
         return configuration;
     }
 
+  /**
+   * Mapper 代理类生成， 最终会调用 {@link MapperRegistry#getMapper(java.lang.Class, org.apache.ibatis.session.SqlSession)()}
+   */
     @Override
     public <T> T getMapper(Class<T> type) {
         return configuration.getMapper(type, this);

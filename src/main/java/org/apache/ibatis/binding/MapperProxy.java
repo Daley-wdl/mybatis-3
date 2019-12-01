@@ -47,6 +47,9 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
     /**
      * 方法与 MapperMethod 的映射
      *
+     *  这个methodCache是在MapperProxyFactory中持有的，MapperProxyFactory又是在Configuration中持有的
+     *  所以每个Mapper接口类对应的MapperProxyFactory和methodCache在整个应用中是共享的，一般只会有一个实例
+     *
      * 从 {@link MapperProxyFactory#methodCache} 传递过来
      */
     private final Map<Method, MapperMethod> methodCache;
@@ -57,10 +60,13 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
         this.methodCache = methodCache;
     }
 
+  /**
+   * 拦截Mapper接口(UserDao)的所有方法
+   */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         try {
-            // 如果是 Object 定义的方法，直接调用
+            // 如果是 Object 定义的方法，直接调用,如toString(),hashCode()
             if (Object.class.equals(method.getDeclaringClass())) {
                 return method.invoke(this, args);
             // 见 https://github.com/mybatis/mybatis-3/issues/709 ，支持 JDK8 default 方法

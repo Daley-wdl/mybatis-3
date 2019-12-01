@@ -25,6 +25,12 @@ import java.util.*;
 /**
  * Mapper 注册表
  *
+ * 1、在Mybatis提供的编程接口中，开发人员只需要定义好Mapper接口(如：UserDao)，开发人员无需去实现。Mybatis会利用JDK的动态代理实现 Mapper接口。
+ * 2、在Mybatis中，每个Mapper接口都会对应一个MapperProxyFactory对象实例，这个对应关系在Configuration.mapperRegistry.knownMappers中。
+ * 3、当getMapper()方法被调用时，Mybatis会找到相对应的MapperProxyFactory对象实例，利用这个工厂来创建一个jdk动态代理对象，是这个Mapper接口的实现类,当Mapper定义的方法被调用时，会调用MapperProxy来处理。
+ * 4、MapperProxy会根据方法找到对应的MapperMethod对象来实现这次调用。
+ * 5、MapperMethod对应会读取方法中的注解，从Configuration中找到相对应的MappedStatement对象，再执行
+ *
  * @author Clinton Begin
  * @author Eduardo Macarron
  * @author Lasse Voss
@@ -38,7 +44,7 @@ public class MapperRegistry {
     /**
      * MapperProxyFactory 的映射
      *
-     * KEY：Mapper 接口
+     * KEY：Mapper 接口, value: 代理工厂
      */
     private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
 
