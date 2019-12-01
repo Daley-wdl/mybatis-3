@@ -27,7 +27,7 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 
 /**
- * Mapper Proxy
+ * Mapper Proxy, MapperProxyFactory 工厂生成 Mapper 接口的代理类
  *
  * @author Clinton Begin
  * @author Eduardo Macarron

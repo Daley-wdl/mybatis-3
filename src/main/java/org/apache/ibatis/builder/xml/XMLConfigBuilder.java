@@ -480,7 +480,10 @@ public class XMLConfigBuilder extends BaseBuilder {
         }
     }
 
-    private void mapperElement(XNode parent) throws Exception {
+  /**
+   * 将符合条件的 Mapper 接口扫描到 Configuration 中
+   */
+  private void mapperElement(XNode parent) throws Exception {
         if (parent != null) {
             // 遍历子节点
             for (XNode child : parent.getChildren()) {

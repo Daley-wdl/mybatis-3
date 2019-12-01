@@ -99,7 +99,7 @@ public class MapperAnnotationBuilder {
         // 判断当前 Mapper 接口是否应加载过。
         String resource = type.toString();
         if (!configuration.isResourceLoaded(resource)) {
-            // 加载对应的 XML Mapper
+            // 首先加载对应的 XML Mapper
             loadXmlResource();
             // 标记该 Mapper 接口已经加载过
             configuration.addLoadedResource(resource);
